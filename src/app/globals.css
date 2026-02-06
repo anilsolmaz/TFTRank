@@ -1,0 +1,1659 @@
+:root {
+  /* Modern Palette */
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --primary-dark: #4f46e5;
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --success: #10b981;
+  --danger: #ef4444;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --bg-dark: #0f172a;
+  --bg-darker: #020617;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  color: var(--text-primary);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  width: 100%;
+  animation: slideUp 0.6s ease-out;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  color: var(--primary);
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.loading-text {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.error-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  background-color: rgba(239, 68, 68, 0.1);
+  color: rgb(252, 165, 165);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.refresh-button {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner-small {
+  width: 1.25rem;
+  height: 1.25rem;
+  animation: spin 1s linear infinite;
+}
+
+/* Comparison Table */
+.comparison-table {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 120px repeat(4, 1fr);
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(245, 158, 11, 0.2));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label-cell {
+  color: var(--text-secondary);
+  font-weight: 500;
+  justify-content: flex-start;
+}
+
+.player-cell {
+  flex-direction: column;
+}
+
+.player-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.trophy-icon {
+  position: absolute;
+  top: -2rem;
+  right: 50%;
+  transform: translateX(50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.player-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 3px solid rgba(99, 102, 241, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.player-name {
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.player-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Table Body */
+.table-body {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 120px repeat(4, 1fr);
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s;
+}
+
+.table-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.row-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.row-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Rank Colors */
+.rank-text {
+  font-weight: bold;
+}
+
+.rank-challenger {
+  color: rgb(244, 200, 116);
+}
+
+.rank-grandmaster {
+  color: rgb(205, 69, 69);
+}
+
+.rank-master {
+  color: rgb(194, 124, 255);
+}
+
+.rank-diamond {
+  color: rgb(147, 197, 253);
+}
+
+.rank-platinum {
+  color: rgb(103, 232, 249);
+}
+
+.rank-gold {
+  color: rgb(250, 204, 21);
+}
+
+.rank-unranked {
+  color: rgb(156, 163, 175);
+}
+
+.rank-default {
+  color: rgb(156, 163, 175);
+}
+
+.lp-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Stats */
+.stat-large {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.stat-primary {
+  color: var(--primary-light);
+}
+
+.stat-success {
+  color: var(--success);
+}
+
+.stat-small {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+/* Placement Badges - Updated with better colors */
+.placement-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.placement-badge {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.placement-first {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: rgb(17, 24, 39);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.placement-top4 {
+  background: linear-gradient(135deg, #C0C0C0, #28a745);
+  color: rgb(17, 24, 39);
+}
+
+.placement-bottom {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.4), rgba(220, 38, 38, 0.4));
+  color: rgb(248, 113, 113);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+/* All Matches */
+.all-matches-container {
+  max-height: 12rem;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-right: 0.5rem;
+}
+
+.placement-badge-small {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-light), var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 100px repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .player-avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 80px repeat(4, 1fr);
+    gap: 0.4rem;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .player-avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .stat-large {
+    font-size: 1.3rem;
+  }
+}
+
+/* Keep side-by-side even on mobile (iPhone XR is 414px) */
+@media (max-width: 768px) {
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    gap: 0.375rem;
+    padding: 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .player-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .player-name {
+    font-size: 0.875rem;
+  }
+
+  .player-tag {
+    font-size: 0.625rem;
+  }
+
+  .stat-large {
+    font-size: 1.25rem;
+  }
+
+  .stat-huge {
+    font-size: 1.75rem;
+  }
+
+  .stat-medium {
+    font-size: 1rem;
+  }
+
+  .stat-small {
+    font-size: 0.625rem;
+  }
+
+  .row-label {
+    font-size: 0.75rem;
+  }
+
+  .trophy-icon {
+    width: 1rem;
+    height: 1rem;
+    top: -1.5rem;
+  }
+
+  .medal-icon {
+    width: 1rem;
+    height: 1rem;
+    top: -1.5rem;
+  }
+}
+
+/* Only stack vertically on very small screens */
+@media (max-width: 360px) {
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .label-cell,
+  .row-label {
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+}
+
+/* Points Info */
+.points-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 9999px;
+  color: var(--accent-light);
+  font-size: 0.875rem;
+}
+
+/* Enhanced Stats */
+.highlight-row {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.stat-huge {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.stat-accent {
+  color: var(--accent-light);
+}
+
+.label-icon {
+  margin-right: 0.5rem;
+  color: var(--accent);
+}
+
+.medal-icon {
+  position: absolute;
+  top: -2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.medal-icon.silver {
+  color: rgb(203, 213, 225);
+  filter: drop-shadow(0 0 8px rgb(203, 213, 225));
+}
+
+.medal-icon.bronze {
+  color: rgb(217, 119, 6);
+  filter: drop-shadow(0 0 8px rgb(217, 119, 6));
+}
+
+/* Head-to-Head Section */
+.head-to-head-section {
+  margin-top: 3rem;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.matches-table {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.matches-header {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(245, 158, 11, 0.2));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.match-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.match-player-name {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.match-row {
+  display: grid;
+  grid-template-columns: 50px repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.2s;
+}
+
+.match-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.match-row:last-child {
+  border-bottom: none;
+}
+
+.match-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.match-placement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  min-width: 80px;
+}
+
+.placement-number {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.placement-points {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.no-common-matches {
+  margin-top: 2rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  color: var(--text-muted);
+}
+
+/* Game Count Selector */
+.game-count-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+}
+
+.selector-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.count-option {
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 0.375rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.count-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.count-option.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* Stats Sections */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary);
+}
+
+.stat-medium {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.stat-muted {
+  color: var(--text-muted);
+}
+
+.rank-note {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Controls Layout */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Fix trophy icon overflow */
+.stats-section .table-header {
+  padding-top: 3rem;
+}
+
+/* Match traits display */
+.match-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.match-trait {
+  font-size: 0.625rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Trait icons */
+.match-trait-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.trait-icon-small {
+  width: 1rem;
+  height: 1rem;
+  object-fit: contain;
+}
+
+/* Updated trait badges */
+.match-trait-badge {
+  font-size: 0.625rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(245, 158, 11, 0.3));
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Responsive matches table */
+@media (max-width: 768px) {
+
+  .matches-header,
+  .match-row {
+    grid-template-columns: 60px 1fr 1fr 1fr;
+    gap: 0.375rem;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .match-placement {
+    min-width: 50px;
+    padding: 0.25rem 0.375rem;
+  }
+
+  .placement-number {
+    font-size: 1rem;
+  }
+
+  .placement-points {
+    font-size: 0.625rem;
+  }
+
+  .match-trait-badge {
+    font-size: 0.5rem;
+    padding: 0.0625rem 0.25rem;
+  }
+}
+
+/* Points Info Grid - 2 Row Horizontal Layout */
+.points-info-grid {
+  margin-bottom: 1.5rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.points-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  color: var(--accent-light);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.points-section {
+  margin-bottom: 1rem;
+}
+
+.points-section:last-child {
+  margin-bottom: 0;
+}
+
+.points-section-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.points-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.points-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  gap: 0.25rem;
+}
+
+/* Gold for 1st */
+.points-item.gold {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.points-item.gold .points-value {
+  color: rgb(255, 215, 0);
+}
+
+/* Silver for 2nd */
+.points-item.silver {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(169, 169, 169, 0.2));
+  border: 1px solid rgba(192, 192, 192, 0.4);
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
+}
+
+.points-item.silver .points-value {
+  color: rgb(192, 192, 192);
+}
+
+/* Bronze for 3rd */
+.points-item.bronze {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(184, 115, 51, 0.2));
+  border: 1px solid rgba(205, 127, 50, 0.4);
+  box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
+}
+
+.points-item.bronze .points-value {
+  color: rgb(205, 127, 50);
+}
+
+/* Green for 4th - More muted */
+.points-item.green {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(52, 211, 153, 0.12));
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+.points-item.green .points-value {
+  color: rgb(52, 211, 153);
+}
+
+/* Light red for 5th - More muted */
+.points-item.red-light {
+  background: linear-gradient(135deg, rgba(252, 165, 165, 0.1), rgba(254, 202, 202, 0.1));
+  border: 1px solid rgba(252, 165, 165, 0.2);
+  box-shadow: 0 0 8px rgba(252, 165, 165, 0.15);
+}
+
+.points-item.red-light .points-value {
+  color: rgb(252, 165, 165);
+}
+
+/* Medium red for 6th - More muted */
+.points-item.red-medium {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.12), rgba(252, 165, 165, 0.12));
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.2);
+}
+
+.points-item.red-medium .points-value {
+  color: rgb(248, 113, 113);
+}
+
+/* Dark red for 7th - More muted */
+.points-item.red-dark {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(248, 113, 113, 0.15));
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.25);
+}
+
+.points-item.red-dark .points-value {
+  color: rgb(239, 68, 68);
+}
+
+/* Darkest red for 8th */
+.points-item.red-darkest {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.3), rgba(239, 68, 68, 0.3));
+  border: 1px solid rgba(220, 38, 38, 0.45);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.4);
+}
+
+.points-item.red-darkest .points-value {
+  color: rgb(220, 38, 38);
+}
+
+.points-item .rank-pos {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.points-item .points-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .points-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .points-item {
+    padding: 0.5rem;
+  }
+
+  .points-item .rank-pos {
+    font-size: 0.625rem;
+  }
+
+  .points-item .points-value {
+    font-size: 1rem;
+  }
+
+  .points-section-label {
+    font-size: 0.75rem;
+  }
+}
+
+/* Match Placements with Same Colors as Point System */
+.match-placement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  min-width: 80px;
+}
+
+.match-placement.placement-1 {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+}
+
+.match-placement.placement-2 {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(169, 169, 169, 0.2));
+  border: 1px solid rgba(192, 192, 192, 0.4);
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.25);
+}
+
+.match-placement.placement-3 {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(184, 115, 51, 0.2));
+  border: 1px solid rgba(205, 127, 50, 0.4);
+  box-shadow: 0 0 10px rgba(205, 127, 50, 0.25);
+}
+
+.match-placement.placement-4 {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2));
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+}
+
+.match-placement.placement-5 {
+  background: linear-gradient(135deg, rgba(252, 165, 165, 0.15), rgba(254, 202, 202, 0.15));
+  border: 1px solid rgba(252, 165, 165, 0.3);
+  box-shadow: 0 0 8px rgba(252, 165, 165, 0.2);
+}
+
+.match-placement.placement-6 {
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(252, 165, 165, 0.2));
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.25);
+}
+
+.match-placement.placement-7 {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(248, 113, 113, 0.25));
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+.match-placement.placement-8 {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.3), rgba(239, 68, 68, 0.3));
+  border: 1px solid rgba(220, 38, 38, 0.45);
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.35);
+}
+
+.placement-number {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.placement-points {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Match Traits - Fixed sizing */
+.match-traits {
+  display: flex;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.match-trait-badge {
+  font-size: 0.625rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(245, 158, 11, 0.3));
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* Trophy Icon Color Variants - Match Point System */
+.trophy-icon.gold {
+  color: rgb(255, 215, 0);
+}
+
+.trophy-icon.silver {
+  color: rgb(192, 192, 192);
+}
+
+.trophy-icon.bronze {
+  color: rgb(205, 127, 50);
+}
+
+/* Match Not Played Indicator */
+.match-not-played {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  opacity: 0.3;
+}
+
+.not-played-indicator {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text-muted);
+}
+
+.trophy-icon.green {
+  color: rgb(52, 211, 153);
+}
+
+/* New Stats Layout */
+.players-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.player-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.stat-row {
+  margin-bottom: 1.5rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+.stat-values {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.stat-box {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-box.highlight {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(245, 158, 11, 0.15));
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .players-header {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .player-card {
+    padding: 1rem 0.5rem;
+  }
+
+  .player-avatar {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  .player-name {
+    font-size: 0.875rem !important;
+  }
+
+  .player-tag {
+    font-size: 0.625rem !important;
+  }
+
+  .stat-values {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .stat-box {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .players-header {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .player-card {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .stat-values {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Fix match placement box sizing */
+.match-cell {
+  display: flex;
+  align-items: stretch;
+}
+
+.match-placement,
+.match-not-played {
+  width: 100%;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* New stat section structure - labels above, 4 columns below */
+.stat-section-block {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.stat-section-block.highlight .stat-grid-4 {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(245, 158, 11, 0.1));
+}
+
+.stat-section-label {
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.stat-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 0;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  border-bottom: none;
+}
+
+.stat-section-block:first-child .stat-grid-4 {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.stat-section-block:last-child .stat-grid-4 {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.stat-cell {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.player-cell {
+  text-align: center;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .stat-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 1.75rem 0.5rem 1rem 0.5rem;
+  }
+
+  .stat-section-label {
+    font-size: 0.6rem;
+    top: 0.35rem;
+    left: 0.5rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .player-avatar {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
+  .player-name {
+    font-size: 0.75rem !important;
+  }
+
+  .player-tag {
+    font-size: 0.6rem !important;
+  }
+
+  .stat-huge {
+    font-size: 1.5rem !important;
+  }
+
+  .stat-large {
+    font-size: 1.1rem !important;
+  }
+
+  .stat-small {
+    font-size: 0.65rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem;
+    padding: 1.5rem 0.25rem 0.75rem 0.25rem;
+  }
+
+  .stat-section-label {
+    font-size: 0.55rem;
+  }
+}
+/* Exception for first block (players) - more top padding for trophies */
+.stat-section-block:first-child .stat-grid-4 {
+  padding-top: 2.5rem;
+}
+
+/* Make other stat rows more compact vertically */
+.stat-section-block:not(:first-child) .stat-grid-4 {
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .stat-section-block:first-child .stat-grid-4 {
+    padding-top: 2rem;
+  }
+  
+  .stat-section-block:not(:first-child) .stat-grid-4 {
+    padding: 1.25rem 0.5rem 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-section-block:first-child .stat-grid-4 {
+    padding-top: 1.75rem;
+  }
+  
+  .stat-section-block:not(:first-child) .stat-grid-4 {
+    padding: 1rem 0.25rem 0.5rem 0.25rem;
+  }
+}
+
+/* Override: Make all stat rows equally compact (no special padding for first-child in game stats) */
+.stats-section:nth-child(2) .stat-section-block:first-child .stat-grid-4 {
+  padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .stats-section:nth-child(2) .stat-section-block:first-child .stat-grid-4 {
+    padding: 1.25rem 0.5rem 0.75rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-section:nth-child(2) .stat-section-block:first-child .stat-grid-4 {
+    padding: 1rem 0.25rem 0.5rem 0.25rem !important;
+  }
+}
+
+/* Compact Match Table Format */
+.matches-table-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.matches-table-header {
+  display: grid;
+  grid-template-columns: 60px repeat(4, 1fr);
+  gap: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(245, 158, 11, 0.2));
+  border-bottom: 1px solid var(--glass-border);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.match-num-header,
+.match-player-header {
+  padding: 0.75rem 0.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.match-num-header:last-child,
+.match-player-header:last-child {
+  border-right: none;
+}
+
+.matches-table-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.match-table-row {
+  display: grid;
+  grid-template-columns: 60px repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.match-table-row:last-child {
+  border-bottom: none;
+}
+
+.match-num-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.match-player-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.match-player-cell:last-child {
+  border-right: none;
+}
+
+.placement-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.not-played {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+}
+
+/* Mobile optimization for 5 matches */
+@media (max-width: 768px) {
+  .matches-table-header {
+    grid-template-columns: 45px repeat(4, 1fr);
+    font-size: 0.7rem;
+  }
+  
+  .match-num-header,
+  .match-player-header {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .match-table-row {
+    grid-template-columns: 45px repeat(4, 1fr);
+  }
+  
+  .match-num-cell {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .match-player-cell {
+    padding: 0.35rem 0.15rem;
+  }
+  
+  .placement-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .matches-table-header {
+    grid-template-columns: 35px repeat(4, 1fr);
+    font-size: 0.65rem;
+  }
+  
+  .match-table-row {
+    grid-template-columns: 35px repeat(4, 1fr);
+  }
+  
+  .match-num-cell {
+    font-size: 0.75rem;
+  }
+  
+  .placement-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Settings Panel with Two Groups */
+.settings-panel {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .settings-panel {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Update settings panel to be simpler, single group layout */
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+}
+
+.settings-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.count-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .settings-panel {
+    padding: 0.75rem 1rem;
+  }
+  
+  .settings-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* Override: Make Analiz Edilen Oyun equally compact as other stats */
+.stats-section:nth-of-type(2) .stat-section-block:first-child .stat-grid-4 {
+  padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .stats-section:nth-of-type(2) .stat-section-block:first-child .stat-grid-4 {
+    padding: 1.25rem 0.5rem 0.75rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-section:nth-of-type(2) .stat-section-block:first-child .stat-grid-4 {
+    padding: 1rem 0.25rem 0.5rem 0.25rem !important;
+  }
+}
+
+/* Player name special padding to avoid trophy overlap */
+.stat-section-block:first-of-type .stat-grid-4 {
+  padding: 2.75rem 1.5rem 1rem 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .stat-section-block:first-of-type .stat-grid-4 {
+    padding: 2.25rem 0.5rem 0.75rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-section-block:first-of-type .stat-grid-4 {
+    padding: 2rem 0.25rem 0.5rem 0.25rem !important;
+  }
+}
+
+/* Increase player name padding even more to avoid trophy overlap */
+.stat-section-block:first-of-type .stat-grid-4 {
+  padding: 3.5rem 1.5rem 1rem 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .stat-section-block:first-of-type .stat-grid-4 {
+    padding: 3rem 0.5rem 0.75rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-section-block:first-of-type .stat-grid-4 {
+    padding: 2.75rem 0.25rem 0.5rem 0.25rem !important;
+  }
+}
+
+/* Match row without # column - just 4 player columns */
+.match-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .match-row {
+    gap: 0.35rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .match-row {
+    gap: 0.25rem;
+  }
+}
