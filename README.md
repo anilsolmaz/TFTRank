@@ -61,8 +61,8 @@ A modern web application for tracking and comparing Teamfight Tactics ranked sta
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/TFTrank.git
-cd TFTrank/tft-rank
+git clone https://github.com/anilsolmaz/TFTRank.git
+cd TFTRank/tft-rank
 ```
 
 2. **Install dependencies**
