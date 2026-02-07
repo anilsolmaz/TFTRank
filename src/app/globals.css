@@ -307,25 +307,28 @@ body {
   border: 1px solid rgba(239, 68, 68, 0.5);
 }
 
-/* All Matches */
+/* All Matches - Single Row Layout */
 .all-matches-container {
-  max-height: 12rem;
-  overflow-y: auto;
+  max-height: 3rem;
+  overflow-x: auto;
+  overflow-y: hidden;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  padding-right: 0.5rem;
+  flex-wrap: nowrap;
+  gap: 0.15rem;
+  padding: 0.25rem;
+  scrollbar-width: thin;
 }
 
 .placement-badge-small {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 0.25rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 0.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.55rem;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
 .gradient-text {
@@ -1333,6 +1336,7 @@ body {
     font-size: 0.55rem;
   }
 }
+
 /* Exception for first block (players) - more top padding for trophies */
 .stat-section-block:first-child .stat-grid-4 {
   padding-top: 2.5rem;
@@ -1347,7 +1351,7 @@ body {
   .stat-section-block:first-child .stat-grid-4 {
     padding-top: 2rem;
   }
-  
+
   .stat-section-block:not(:first-child) .stat-grid-4 {
     padding: 1.25rem 0.5rem 0.75rem 0.5rem;
   }
@@ -1357,7 +1361,7 @@ body {
   .stat-section-block:first-child .stat-grid-4 {
     padding-top: 1.75rem;
   }
-  
+
   .stat-section-block:not(:first-child) .stat-grid-4 {
     padding: 1rem 0.25rem 0.5rem 0.25rem;
   }
@@ -1473,25 +1477,25 @@ body {
     grid-template-columns: 45px repeat(4, 1fr);
     font-size: 0.7rem;
   }
-  
+
   .match-num-header,
   .match-player-header {
     padding: 0.5rem 0.25rem;
   }
-  
+
   .match-table-row {
     grid-template-columns: 45px repeat(4, 1fr);
   }
-  
+
   .match-num-cell {
     padding: 0.5rem 0.25rem;
     font-size: 0.875rem;
   }
-  
+
   .match-player-cell {
     padding: 0.35rem 0.15rem;
   }
-  
+
   .placement-badge {
     width: 32px;
     height: 32px;
@@ -1504,15 +1508,15 @@ body {
     grid-template-columns: 35px repeat(4, 1fr);
     font-size: 0.65rem;
   }
-  
+
   .match-table-row {
     grid-template-columns: 35px repeat(4, 1fr);
   }
-  
+
   .match-num-cell {
     font-size: 0.75rem;
   }
-  
+
   .placement-badge {
     width: 28px;
     height: 28px;
@@ -1582,7 +1586,7 @@ body {
   .settings-panel {
     padding: 0.75rem 1rem;
   }
-  
+
   .settings-label {
     font-size: 0.8rem;
   }
@@ -1656,4 +1660,423 @@ body {
   .match-row {
     gap: 0.25rem;
   }
+}
+
+/* Trophy next to stat value */
+.stat-with-trophy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.mini-trophy {
+  flex-shrink: 0;
+}
+
+.mini-trophy.gold {
+  color: #FFD700;
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.5));
+}
+
+.mini-trophy.silver {
+  color: #C0C0C0;
+  filter: drop-shadow(0 0 4px rgba(192, 192, 192, 0.5));
+}
+
+.mini-trophy.bronze {
+  color: #CD7F32;
+  filter: drop-shadow(0 0 4px rgba(205, 127, 50, 0.5));
+}
+
+/* Make player name trophy icons 25% bigger */
+.player-card .trophy-icon {
+  width: 1.875rem !important;
+  height: 1.875rem !important;
+}
+
+@media (max-width: 768px) {
+  .player-card .trophy-icon {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .stat-with-trophy {
+    gap: 0.35rem;
+  }
+
+  .mini-trophy {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-card .trophy-icon {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+
+  .mini-trophy {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+
+/* Last 20 Games Grid Section - ULTRA COMPACT */
+.last-games-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.player-games-grid {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.games-grid-header {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15rem;
+}
+
+.game-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-weight: 700;
+  border-radius: 0.2rem;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 18px;
+}
+
+.game-cell.empty {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* Placement colors for game cells (same as match placements) */
+.game-cell.placement-1 {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+  color: #FFD700;
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 4px rgba(255, 215, 0, 0.15);
+}
+
+.game-cell.placement-2 {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05));
+  color: #C0C0C0;
+  border-color: rgba(192, 192, 192, 0.3);
+}
+
+.game-cell.placement-3 {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05));
+  color: #CD7F32;
+  border-color: rgba(205, 127, 50, 0.3);
+}
+
+.game-cell.placement-4 {
+  background: linear-gradient(135deg, rgba(100, 200, 100, 0.15), rgba(100, 200, 100, 0.05));
+  color: #6fd96f;
+  border-color: rgba(100, 200, 100, 0.2);
+}
+
+.game-cell.placement-5 {
+  background: linear-gradient(135deg, rgba(150, 150, 150, 0.15), rgba(150, 150, 150, 0.05));
+  color: #999;
+  border-color: rgba(150, 150, 150, 0.2);
+}
+
+.game-cell.placement-6 {
+  background: linear-gradient(135deg, rgba(255, 150, 100, 0.15), rgba(255, 150, 100, 0.05));
+  color: #ff9966;
+  border-color: rgba(255, 150, 100, 0.2);
+}
+
+.game-cell.placement-7 {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 0.2), rgba(255, 100, 100, 0.05));
+  color: #ff6666;
+  border-color: rgba(255, 100, 100, 0.3);
+}
+
+.game-cell.placement-8 {
+  background: linear-gradient(135deg, rgba(200, 50, 50, 0.25), rgba(200, 50, 50, 0.05));
+  color: #ff4444;
+  border-color: rgba(200, 50, 50, 0.4);
+  box-shadow: 0 0 4px rgba(200, 50, 50, 0.15);
+}
+
+.game-cell:hover:not(.empty) {
+  transform: scale(1.15);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .last-games-grid-container {
+    gap: 0.35rem;
+  }
+
+  .player-games-grid {
+    padding: 0.4rem;
+  }
+
+  .games-grid {
+    gap: 0.1rem;
+  }
+
+  .game-cell {
+    font-size: 0.55rem;
+    min-height: 16px;
+  }
+
+  .games-grid-header {
+    font-size: 0.65rem;
+    margin-bottom: 0.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .last-games-grid-container {
+    gap: 0.25rem;
+  }
+
+  .player-games-grid {
+    padding: 0.3rem;
+  }
+
+  .games-grid {
+    gap: 0.08rem;
+  }
+
+  .game-cell {
+    font-size: 0.5rem;
+    min-height: 14px;
+    border-width: 0.5px;
+  }
+
+  .games-grid-header {
+    font-size: 0.6rem;
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.2rem;
+  }
+}
+
+.last-games-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.player-games-grid {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.games-grid-header {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.games-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  padding: 0.25rem 0;
+}
+
+.game-cell {
+  min-width: var(--cell-size, 0.95rem);
+  min-height: var(--cell-size, 0.95rem);
+  max-width: 2rem;
+  max-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.2rem;
+  font-size: calc(var(--cell-size, 0.95rem) * 0.5);
+  font-weight: bold;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Mobile: Smaller default size */
+@media (max-width: 768px) {
+  .game-cell {
+    min-width: var(--cell-size, 0.75rem);
+    min-height: var(--cell-size, 0.75rem);
+    font-size: calc(var(--cell-size, 0.75rem) * 0.5);
+  }
+
+  .games-grid {
+    gap: 0.1rem;
+  }
+}
+
+.game-cell.empty {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* Placement colors for game cells (same as match placements) */
+.game-cell.placement-1 {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.05));
+  color: #FFD700;
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+}
+
+.game-cell.placement-2 {
+  background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.05));
+  color: #C0C0C0;
+  border-color: rgba(192, 192, 192, 0.3);
+}
+
+.game-cell.placement-3 {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), rgba(205, 127, 50, 0.05));
+  color: #CD7F32;
+  border-color: rgba(205, 127, 50, 0.3);
+}
+
+.game-cell.placement-4 {
+  background: linear-gradient(135deg, rgba(100, 200, 100, 0.15), rgba(100, 200, 100, 0.05));
+  color: #6fd96f;
+  border-color: rgba(100, 200, 100, 0.2);
+}
+
+.game-cell.placement-5 {
+  background: linear-gradient(135deg, rgba(150, 150, 150, 0.15), rgba(150, 150, 150, 0.05));
+  color: #999;
+  border-color: rgba(150, 150, 150, 0.2);
+}
+
+.game-cell.placement-6 {
+  background: linear-gradient(135deg, rgba(255, 150, 100, 0.15), rgba(255, 150, 100, 0.05));
+  color: #ff9966;
+  border-color: rgba(255, 150, 100, 0.2);
+}
+
+.game-cell.placement-7 {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 0.2), rgba(255, 100, 100, 0.05));
+  color: #ff6666;
+  border-color: rgba(255, 100, 100, 0.3);
+}
+
+.game-cell.placement-8 {
+  background: linear-gradient(135deg, rgba(200, 50, 50, 0.25), rgba(200, 50, 50, 0.05));
+  color: #ff4444;
+  border-color: rgba(200, 50, 50, 0.4);
+  box-shadow: 0 0 8px rgba(200, 50, 50, 0.2);
+}
+
+.game-cell:hover:not(.empty) {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .last-games-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .player-games-grid {
+    padding: 0.75rem;
+  }
+
+  .games-grid {
+    gap: 0.25rem;
+  }
+
+  .game-cell {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .last-games-grid-container {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .games-grid-header {
+    font-size: 0.8rem;
+  }
+}
+
+/* Matches Header Section */
+.matches-header-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+}
+
+.match-player-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+/* SECTION ORDER FIX: Reorder sections using flexbox */
+.stats-section:nth-of-type(2) {
+  order: 3;
+}
+
+.stats-section:nth-of-type(3) {
+  order: 2;
+}
+
+/* Fix player-info-column centering in matches header */
+.match-player-header .player-info-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.match-player-header .trophy-icon {
+  position: absolute;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Section 4: Ortak Oynanan Maçlar - Minimal Background Fix */
+.matches-player-headers {
+  margin-bottom: 1.5rem;
 }

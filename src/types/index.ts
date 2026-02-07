@@ -1,14 +1,16 @@
+export interface Rank {
+    tier: string;
+    rank: string;
+    leaguePoints: number;
+}
+
 export interface Player {
     name: string;
     tag: string;
     puuid: string;
     summonerId: string;
     profileIconId: number;
-    rank: {
-        tier: string;
-        rank: string;
-        leaguePoints: number;
-    } | null;
+    rank: Rank | null;
     recentMatches: MatchResult[];
 }
 

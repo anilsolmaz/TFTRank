@@ -40,14 +40,14 @@ export async function getAccountByRiotId(gameName: string, tagLine: string) {
 }
 
 export async function getSummonerByPuuid(puuid: string) {
-    // Try TFT endpoint first, then LoL if needed, or just use LoL V4 as it's standard for Summoner ID
-    // Updating to use LoL V4 as TFT endpoint seemed to miss 'id' in some cases or regions
+    // Use LOL Summoner V4 to get summoner ID (works for both LOL and TFT players)
     const url = `${BASE_URL_PLATFORM}/lol/summoner/v4/summoners/by-puuid/${puuid}`;
     return fetchRiot(url);
 }
 
 export async function getLeagueEntries(summonerId: string) {
-    const url = `${BASE_URL_PLATFORM}/tft/league/v1/entries/by-summoner/${summonerId}`;
+    // Use LOL League V4 endpoint which includes RANKED_TFT queue data
+    const url = `${BASE_URL_PLATFORM}/lol/league/v4/entries/by-summoner/${summonerId}`;
     return fetchRiot(url);
 }
 

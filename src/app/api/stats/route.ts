@@ -22,41 +22,17 @@ export async function GET() {
                 const account = await getAccountByRiotId(p.name, p.tag);
                 const puuid = account.puuid;
 
-                // 2. Get Summoner (for Icon + ID)
+                // 2. Get Summoner (for profile icon only, no rank)
                 const summoner = await getSummonerByPuuid(puuid);
 
-                // 3. Get League (Rank)
-                let tftRank = null;
-                if (summoner.id) {
-                    try {
-                        const leagueEntries = await getLeagueEntries(summoner.id);
-                        tftRank = leagueEntries.find((e: any) => e.queueType === 'RANKED_TFT') || null;
-                    } catch (err) {
-                        console.warn(`Failed to fetch league entries for ${p.name}`, err);
-                    }
-                } else {
-                    console.warn(`Summoner ID missing for ${p.name}, skipping rank lookup.`);
-                }
-
-                // 4. Get Matches
+                // 3. Get Matches
                 const matchIds = await getMatchIds(puuid, 20);
 
-                // 5. Get Match Details (Parallel)
-                // Note: Free tier key has 20 requests/1sec and 100/2min.
-                // Fetching 20 matches for 4 players = 80 requests. This will hit rate limits.
-                // We should fetch fewer matches or do it sequentially with delays.
-                // For prototype, let's fetch last 5 matches full details, and just placement for others if possible?
-                // Actually, match history endpoint only gives IDs. We need details for placement.
-                // Let's limit to last 10 games for now or add delay.
-
-                // To avoid complexity, let's fetch last 20 matches as requested.
-                const recentMatchIds = matchIds.slice(0, 20);
-
+                // 4. Get Match Details
                 const matches: MatchResult[] = [];
-                for (const mid of recentMatchIds) {
+                for (const mid of matchIds) {
                     const details = await getMatchDetails(mid);
-                    // Find this player's participant data
-                    const participant = details.info.participants.find((part: any) => part.puuid === puuid);
+                    const participant = details.info.participants.find((par: any) => par.puuid === puuid);
 
                     if (participant) {
                         matches.push({
@@ -79,13 +55,9 @@ export async function GET() {
                     name: account.gameName,
                     tag: account.tagLine,
                     puuid: puuid,
-                    summonerId: summoner.id,
-                    profileIconId: summoner.profileIconId,
-                    rank: tftRank ? {
-                        tier: tftRank.tier,
-                        rank: tftRank.rank,
-                        leaguePoints: tftRank.leaguePoints
-                    } : null,
+                    summonerId: summoner.id || '',
+                    profileIconId: summoner.profileIconId || 0,
+                    rank: null,
                     recentMatches: matches
                 });
 

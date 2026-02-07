@@ -48,6 +48,13 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchData();
+
+        // Auto-refresh every 1 minute (60 seconds)
+        const interval = setInterval(() => {
+            fetchData();
+        }, 60000);
+
+        return () => clearInterval(interval);
     }, []);
 
     // Filter matches based on selected game count (API returns max 20)
@@ -308,19 +315,20 @@ export default function Dashboard() {
                         <div className="stat-section-label">Oyuncu Adı</div>
                         <div className="stat-grid-4">
                             {rankedPlayers.map(({ player }, index) => (
-                                <div key={player.puuid} className="player-cell">
-                                    <div className="player-header">
-                                        {index === 0 && <Trophy className="trophy-icon gold" />}
-                                        {index === 1 && <Trophy className="trophy-icon silver" />}
-                                        {index === 2 && <Trophy className="trophy-icon bronze" />}
-                                        {index === 3 && <Trophy className="trophy-icon green" />}
-                                        <img
-                                            src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.profileIconId}.jpg`}
-                                            alt={player.name}
-                                            className="player-avatar"
-                                            onError={(e) => { (e.target as HTMLImageElement).src = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/0.jpg' }}
-                                        />
-                                        <h3 className="player-name">{player.name}</h3>
+                                <div key={player.puuid} className="stat-cell">
+                                    <div className="player-card">
+                                        {index === 0 && <Trophy className="trophy-icon gold" size={24} />}
+                                        {index === 1 && <Trophy className="trophy-icon silver" size={24} />}
+                                        {index === 2 && <Trophy className="trophy-icon bronze" size={24} />}
+                                        <div className="avatar-container">
+                                            <img
+                                                src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.profileIconId}.jpg`}
+                                                alt={player.name}
+                                                className="player-avatar"
+                                                onError={(e) => { (e.target as HTMLImageElement).src = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/0.jpg' }}
+                                            />
+                                        </div>
+                                        <p className="player-name">{player.name}</p>
                                         <p className="player-tag">#{player.tag}</p>
                                     </div>
                                 </div>
@@ -328,41 +336,85 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Total Points */}
+                    {/* Total Points (Toplam Puan) */}
                     <div className="stat-section-block highlight">
                         <div className="stat-section-label">Toplam Puan</div>
                         <div className="stat-grid-4">
-                            {rankedPlayers.map(({ totalPoints, player }) => (
+                            {rankedPlayers.map(({ totalPoints, filteredGames, player }) => (
                                 <div key={player.puuid} className="stat-cell">
                                     <p className="stat-huge stat-accent">{totalPoints}</p>
+                                    <p className="stat-small">{filteredGames} toplam oyun</p>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    {/* Avg Points */}
+                    {/* Solo Points */}
                     <div className="stat-section-block">
-                        <div className="stat-section-label">Ort. Puan/Oyun</div>
+                        <div className="stat-section-label">Solo Puan</div>
                         <div className="stat-grid-4">
-                            {rankedPlayers.map(({ avgPoints, player }) => (
-                                <div key={player.puuid} className="stat-cell">
-                                    <p className="stat-large stat-primary">{avgPoints}</p>
-                                </div>
-                            ))}
+                            {(() => {
+                                // Create separate ranking for solo points
+                                const soloRanked = rankedPlayers
+                                    .map(({ totalPoints, commonPoints, filteredGames, commonGamesCount, player }) => ({
+                                        player,
+                                        soloPoints: totalPoints - commonPoints,
+                                        soloGames: filteredGames - commonGamesCount
+                                    }))
+                                    .sort((a, b) => b.soloPoints - a.soloPoints);
+
+                                return rankedPlayers.map(({ player, totalPoints, commonPoints, filteredGames, commonGamesCount }) => {
+                                    const soloPoints = totalPoints - commonPoints;
+                                    const soloGames = filteredGames - commonGamesCount;
+                                    const soloRank = soloRanked.findIndex(s => s.player.puuid === player.puuid);
+
+                                    return (
+                                        <div key={player.puuid} className="stat-cell">
+                                            <div className="stat-with-trophy">
+                                                <p className="stat-large stat-primary">{soloPoints}</p>
+                                                {soloRank === 0 && <Trophy className="mini-trophy gold" size={16} />}
+                                                {soloRank === 1 && <Trophy className="mini-trophy silver" size={16} />}
+                                                {soloRank === 2 && <Trophy className="mini-trophy bronze" size={16} />}
+                                            </div>
+                                            <p className="stat-small">{soloGames} solo oyun</p>
+                                        </div>
+                                    );
+                                });
+                            })()}
                         </div>
                     </div>
 
                     {/* Head to Head Points */}
                     {commonMatches.length > 0 && (
-                        <div className="stat-section-block highlight">
-                            <div className="stat-section-label">Karşılıklı Puan</div>
+                        <div className="stat-section-block">
+                            <div className="stat-section-label">Ortak Puan</div>
                             <div className="stat-grid-4">
-                                {rankedPlayers.map(({ commonPoints, commonGamesCount, player }) => (
-                                    <div key={player.puuid} className="stat-cell">
-                                        <p className="stat-large stat-accent">{commonPoints}</p>
-                                        <p className="stat-small">{commonGamesCount} ortak oyun</p>
-                                    </div>
-                                ))}
+                                {(() => {
+                                    // Create separate ranking for ortak points
+                                    const ortakRanked = rankedPlayers
+                                        .map(({ commonPoints, commonGamesCount, player }) => ({
+                                            player,
+                                            commonPoints,
+                                            commonGamesCount
+                                        }))
+                                        .sort((a, b) => b.commonPoints - a.commonPoints);
+
+                                    return rankedPlayers.map(({ player, commonPoints, commonGamesCount }) => {
+                                        const ortakRank = ortakRanked.findIndex(o => o.player.puuid === player.puuid);
+
+                                        return (
+                                            <div key={player.puuid} className="stat-cell">
+                                                <div className="stat-with-trophy">
+                                                    <p className="stat-large stat-accent">{commonPoints}</p>
+                                                    {ortakRank === 0 && <Trophy className="mini-trophy gold" size={16} />}
+                                                    {ortakRank === 1 && <Trophy className="mini-trophy silver" size={16} />}
+                                                    {ortakRank === 2 && <Trophy className="mini-trophy bronze" size={16} />}
+                                                </div>
+                                                <p className="stat-small">{commonGamesCount} ortak oyun</p>
+                                            </div>
+                                        );
+                                    });
+                                })()}
                             </div>
                         </div>
                     )}
@@ -376,6 +428,32 @@ export default function Dashboard() {
                     Oyun İstatistikleri
                 </h2>
                 <div className="comparison-table">
+                    {/* Player Headers */}
+                    <div className="stat-section-block">
+                        <div className="stat-section-label">Oyuncular</div>
+                        <div className="stat-grid-4">
+                            {rankedPlayers.map(({ player }, index) => (
+                                <div key={player.puuid} className="stat-cell">
+                                    <div className="player-info-column">
+                                        {index === 0 && <Trophy className="trophy-icon gold" size={24} />}
+                                        {index === 1 && <Trophy className="trophy-icon silver" size={24} />}
+                                        {index === 2 && <Trophy className="trophy-icon bronze" size={24} />}
+                                        <div className="avatar-container">
+                                            <img
+                                                src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.profileIconId}.jpg`}
+                                                alt={player.name}
+                                                className="player-avatar"
+                                                onError={(e) => { (e.target as HTMLImageElement).src = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/0.jpg' }}
+                                            />
+                                        </div>
+                                        <p className="player-name">{player.name}</p>
+                                        <p className="player-tag">#{player.tag}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     {/* Analysed Games */}
                     <div className="stat-section-block">
                         <div className="stat-section-label">Analiz Edilen Oyun</div>
@@ -427,24 +505,51 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Current Rank */}
-                    <div className="stat-section-block">
-                        <div className="stat-section-label">Mevcut Rank</div>
-                        <div className="stat-grid-4">
-                            {rankedPlayers.map(({ player }) => (
-                                <div key={player.puuid} className="stat-cell">
-                                    <p className={`rank-text ${getRankColor(player.rank?.tier)}`}>
-                                        {player.rank ? `${player.rank.tier} ${player.rank.rank}` : 'Unranked'}
-                                    </p>
-                                    {player.rank && <p className="lp-text">{player.rank.leaguePoints} LP</p>}
-                                    {!player.rank && <p className="stat-small rank-note">TR1 için rütbe verisi mevcut değil</p>}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                 </div>
             </div>
 
+
+            {/* SECTION 3: LAST 20 GAMES GRID - Only show if there are games */}
+            {rankedPlayers.some(({ player }) => getFilteredMatches(player).length > 0) && (
+                <div className="stats-section">
+                    <h2 className="section-header">
+                        <Target size={20} />
+                        Son 20 Oyun
+                    </h2>
+                    <div className="comparison-table">
+                        <div className="last-games-grid-container">
+                            {rankedPlayers.map(({ player }) => {
+                                const playerMatches = getFilteredMatches(player).slice(0, 20);
+
+                                // Skip if no games
+                                if (playerMatches.length === 0) return null;
+
+                                return (
+                                    <div key={player.puuid} className="player-games-grid">
+                                        <div className="games-grid-header">{player.name}</div>
+                                        <div
+                                            className="games-grid"
+                                            style={{
+                                                // Dynamic sizing: fewer games = bigger cells (max 2rem)
+                                                '--cell-size': `min(${Math.max(0.95, Math.min(2, 20 / playerMatches.length))}rem, 2rem)`
+                                            } as React.CSSProperties}
+                                        >
+                                            {playerMatches.map((match, idx) => (
+                                                <div
+                                                    key={match.matchId}
+                                                    className={`game-cell placement-${match.placement}`}
+                                                >
+                                                    {match.placement}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* SECTION 4: HEAD-TO-HEAD MATCHES */}
             {commonMatches.length > 0 && (
@@ -453,68 +558,92 @@ export default function Dashboard() {
                         <Swords size={20} />
                         Ortak Oynanan Maçlar
                     </h2>
-                    <div className="matches-grid">
-                        {commonMatches.slice(0, 20).map((match) => {
-                            // Get match details for trait display
-                            const matchDetails = rankedPlayers.map(({ player }) => {
-                                const playerMatch = getFilteredMatches(player).find(m => m.matchId === match.matchId);
-                                return {
-                                    puuid: player.puuid,
-                                    traits: playerMatch?.traits || []
-                                };
-                            });
 
-                            return (
-                                <div key={match.matchId} className="match-card">
-                                    <div className="match-row">
-                                        {rankedPlayers.map(({ player }) => {
-                                            const placement = match.placements[player.puuid];
+                    <div className="comparison-table">
+                        {/* Player Headers */}
+                        <div className="stat-grid-4 matches-player-headers">
+                            {rankedPlayers.map(({ player }) => (
+                                <div key={player.puuid} className="stat-cell">
+                                    <div className="player-info-column">
+                                        <div className="avatar-container">
+                                            <img
+                                                src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/${player.profileIconId}.jpg`}
+                                                alt={player.name}
+                                                className="player-avatar"
+                                                onError={(e) => { (e.target as HTMLImageElement).src = 'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/0.jpg' }}
+                                            />
+                                        </div>
+                                        <p className="player-name">{player.name}</p>
+                                        <p className="player-tag">#{player.tag}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
-                                            // Player wasn't in this match
-                                            if (!placement) {
+                        {/* Matches Grid */}
+                        <div className="matches-grid">
+                            {commonMatches.slice(0, 20).map((match) => {
+                                // Get match details for trait display
+                                const matchDetails = rankedPlayers.map(({ player }) => {
+                                    const playerMatch = getFilteredMatches(player).find(m => m.matchId === match.matchId);
+                                    return {
+                                        puuid: player.puuid,
+                                        traits: playerMatch?.traits || []
+                                    };
+                                });
+
+                                return (
+                                    <div key={match.matchId} className="match-card">
+                                        <div className="match-row">
+                                            {rankedPlayers.map(({ player }) => {
+                                                const placement = match.placements[player.puuid];
+
+                                                // Player wasn't in this match
+                                                if (!placement) {
+                                                    return (
+                                                        <div key={player.puuid} className="match-cell">
+                                                            <div className="match-not-played">
+                                                                <span className="not-played-indicator">—</span>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+
+                                                const points = getPoints(placement);
+                                                const playerTraits = matchDetails.find(m => m.puuid === player.puuid)?.traits || [];
+                                                const topTraits = playerTraits
+                                                    .filter(t => t.tier_current > 0)
+                                                    .sort((a, b) => b.style - a.style)
+                                                    .slice(0, 2);
+
                                                 return (
                                                     <div key={player.puuid} className="match-cell">
-                                                        <div className="match-not-played">
-                                                            <span className="not-played-indicator">—</span>
+                                                        <div className={`match-placement placement-${placement}`}>
+                                                            <span className="placement-number">#{placement}</span>
+                                                            <span className="placement-points">{points > 0 ? '+' : ''}{points}pts</span>
+                                                            {topTraits.length > 0 && (
+                                                                <div className="match-traits">
+                                                                    {topTraits.map(t => {
+                                                                        const traitName = t.name.replace(/^(Set|TFT|TFTSet)\d+_/, '');
+                                                                        // Remove "Unique" suffix
+                                                                        const displayName = traitName.replace(/Unique$/, '').split('_').pop() || traitName;
+                                                                        return (
+                                                                            <span key={t.name} className="match-trait-badge">
+                                                                                {displayName}
+                                                                            </span>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </div>
                                                 );
-                                            }
-
-                                            const points = getPoints(placement);
-                                            const playerTraits = matchDetails.find(m => m.puuid === player.puuid)?.traits || [];
-                                            const topTraits = playerTraits
-                                                .filter(t => t.tier_current > 0)
-                                                .sort((a, b) => b.style - a.style)
-                                                .slice(0, 2);
-
-                                            return (
-                                                <div key={player.puuid} className="match-cell">
-                                                    <div className={`match-placement placement-${placement}`}>
-                                                        <span className="placement-number">#{placement}</span>
-                                                        <span className="placement-points">{points > 0 ? '+' : ''}{points}pts</span>
-                                                        {topTraits.length > 0 && (
-                                                            <div className="match-traits">
-                                                                {topTraits.map(t => {
-                                                                    const traitName = t.name.replace(/^(Set|TFT|TFTSet)\d+_/, '');
-                                                                    // Remove "Unique" suffix
-                                                                    const displayName = traitName.replace(/Unique$/, '').split('_').pop() || traitName;
-                                                                    return (
-                                                                        <span key={t.name} className="match-trait-badge">
-                                                                            {displayName}
-                                                                        </span>
-                                                                    );
-                                                                })}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
